@@ -5,6 +5,8 @@ import models.Coordonnees;
 
 import java.util.List;
 
+import static java.lang.Integer.parseInt;
+
 public abstract class CarteService {
 
     public static Case[][] createMap(List<String> rows){
@@ -16,8 +18,15 @@ public abstract class CarteService {
     }
 
     public static Case[][] generateMap(List<String> rows){
-        int largeur = Character.getNumericValue(rows.get(0).charAt(4));
-        int longueur = Character.getNumericValue(rows.get(0).charAt(8));
+        int largeur = 0, longueur = 0;
+        for(String row : rows) {
+            String[] rowsplit = row.split(" - ");
+            if(rowsplit[0].equals("C")){
+                largeur = parseInt(rowsplit[1]);
+                longueur = parseInt(rowsplit[2]);
+            }
+        }
+
         Case[][] carte = new Case[largeur][longueur];
 
         for(int i=0; i<largeur; i++){
@@ -32,20 +41,20 @@ public abstract class CarteService {
     public static void fillMap(Case[][] carte, List<String> rows){
 
         for(String row : rows){
-            char firstChar = row.charAt(0);
-            switch (firstChar){
-                case 'M':
+            String[] rowsplit = row.split(" - ");
+            switch (rowsplit[0]){
+                case "M":
                     System.out.println(row);
-                    int x = Character.getNumericValue(row.charAt(4));
-                    int y = Character.getNumericValue(row.charAt(8));
+                    int x = parseInt(rowsplit[1]);
+                    int y = parseInt(rowsplit[2]);
                     carte[x][y].setIsMontagne(true);
                     carte[x][y].setNbTresors(0);
                     break;
 
-                case 'T':
+                case "T":
                     System.out.println(row);
-                    x = Character.getNumericValue(row.charAt(4));
-                    y = Character.getNumericValue(row.charAt(8));
+                    x = parseInt(rowsplit[1]);
+                    y = parseInt(rowsplit[2]);
                     int nbTresors = Character.getNumericValue(row.charAt(12));
                     carte[x][y].setIsMontagne(false);
                     carte[x][y].setNbTresors(nbTresors);

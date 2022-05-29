@@ -9,16 +9,19 @@ public class Aventurier {
     private String orientation;
     private Coordonnees position;
     private int nbTresors;
+    private String mouvements;
 
     public Aventurier (){
 
     }
 
-    public Aventurier(String nom, String orientation, Coordonnees position){
+    public Aventurier(String nom, String orientation, Coordonnees position, String mouvements){
         this.nom = nom;
         this.orientation = orientation;
         this.position = position;
         this.nbTresors = 0;
+        this.mouvements = mouvements;
+
     }
 
     public String getName() {
@@ -45,7 +48,21 @@ public class Aventurier {
         this.position = position;
     }
 
+    public int getNbTresors() {
+        return nbTresors;
+    }
 
+    public void setNbTresors(int nbTresors) {
+        this.nbTresors = nbTresors;
+    }
+
+    public String getMouvements() {
+        return mouvements;
+    }
+
+    public void setMouvements(String mouvements) {
+        this.mouvements = mouvements;
+    }
 
 
 

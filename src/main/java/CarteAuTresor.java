@@ -10,12 +10,12 @@ import java.util.List;
 
 public class CarteAuTresor {
     public static void main(String[] args) throws Exception {
-        Aventurier av = new Aventurier("Alain", "Nord", new Coordonnees(0,0));
-        AventurierService.turnRight(av);
 
         String filepath = args[0];
-
         List<String> rows = ReadFile.getFile(filepath);
+
+        Aventurier av = AventurierService.createAventurier(rows);
         Case[][] carte = CarteService.createMap(rows);
+
     }
 }
