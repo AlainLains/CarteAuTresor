@@ -94,7 +94,7 @@ public class AventurierMouvementsService {
         return nextAventurierPosition;
     }
 
-    public static void moveAventurier(Case[][] carte, Aventurier aventurier, Coordonnees taille){
+    public static Case[][] moveAventurier(Case[][] carte, Aventurier aventurier, Coordonnees taille){
         char[] etapes = aventurier.getMouvements().toCharArray();
 
         int largeur = taille.getPositionX();
@@ -110,11 +110,10 @@ public class AventurierMouvementsService {
                 case 'A':
                     //Vérification pour éviter que l'aventurier ne soit en out of bounds
                     if(nextAventurierPosition.getPositionX() >= 0 && nextAventurierPosition.getPositionY() >= 0
-                            && nextAventurierPosition.getPositionX() <= largeur && nextAventurierPosition.getPositionY() <= longueur) {
+                            && nextAventurierPosition.getPositionX() < largeur && nextAventurierPosition.getPositionY() < longueur) {
 
                         //Vérification pour que l'aventurier ne puisse pas aller sur une case montange
                         boolean isNextCaseMontagne = carte[nextAventurierPosition.getPositionX()][nextAventurierPosition.getPositionY()].getIsMontagne();
-                        if(isNextCaseMontagne) System.out.println("Vous ne pouvez pas accéder à la case ("+nextAventurierPosition.getPositionX()+","+nextAventurierPosition.getPositionY()+") dû à des montagnes.");
 
                         //Application du déplacement
                         if(!isNextCaseMontagne){
@@ -130,8 +129,12 @@ public class AventurierMouvementsService {
                             System.out.println("X après déplacement : " + aventurier.getPosition().getPositionX() + "\nY après déplacement : " + aventurier.getPosition().getPositionY());
                             checkPositionTresor(carte, aventurier);
                         }
+                        else System.out.println("Vous ne pouvez pas accéder à la case ("+nextAventurierPosition.getPositionX()+","+nextAventurierPosition.getPositionY()+") dû à des montagnes.");
+
 
                     }
+                    else
+                        System.out.println("Out of bounds");
                     break;
                 case 'D':
                     nextAventurierPosition = turnRight(aventurier);
@@ -141,6 +144,7 @@ public class AventurierMouvementsService {
                     break;
             }
         }
+        return carte;
     }
 
     public static void checkPositionTresor(Case[][] carte, Aventurier aventurier){
@@ -149,6 +153,9 @@ public class AventurierMouvementsService {
         if(nbTresorsDansCase > 0){
             carte[aventurier.getPosition().getPositionX()][aventurier.getPosition().getPositionY()].setNbTresors(nbTresorsDansCase - 1);
             aventurier.setNbTresors(aventurier.getNbTresors() + 1);
+            System.out.println(aventurier.getName() + " a trouvé un trésor, bravo ! Il en a " + aventurier.getNbTresors() + " a son actif.");
         }
     }
+
+
 }
