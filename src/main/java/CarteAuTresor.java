@@ -1,6 +1,7 @@
 import models.Aventurier;
 import models.Case;
 import models.Coordonnees;
+import services.AventurierMouvementsService;
 import services.AventurierService;
 import services.CarteService;
 import utils.ReadFile;
@@ -17,5 +18,7 @@ public class CarteAuTresor {
         Aventurier av = AventurierService.createAventurier(rows);
         Case[][] carte = CarteService.createMap(rows);
 
+        System.out.println(av.getMouvements());
+        AventurierMouvementsService.moveAventurier(carte, av);
     }
 }
