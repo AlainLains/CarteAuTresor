@@ -18,4 +18,8 @@ public class WriteFile {
             e.printStackTrace();
         }
     }
+
+    public static void getDataFromAventurier(){
+        
+    }
 }

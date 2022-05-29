@@ -31,7 +31,7 @@ public class Case {
         this.position = position;
     }
 
-    public boolean isMontagne() {
+    public boolean getIsMontagne() {
         return isMontagne;
     }
 

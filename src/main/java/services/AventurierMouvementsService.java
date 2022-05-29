@@ -95,8 +95,7 @@ public class AventurierMouvementsService {
     }
 
     public static void moveAventurier(Case[][] carte, Aventurier aventurier, Coordonnees taille){
-        String mouvements = aventurier.getMouvements();
-        char[] etapes = mouvements.toCharArray();
+        char[] etapes = aventurier.getMouvements().toCharArray();
 
         int largeur = taille.getPositionX();
         int longueur = taille.getPositionY();
@@ -105,23 +104,32 @@ public class AventurierMouvementsService {
         Coordonnees nextAventurierPosition = initializeNextAventurierPosition(aventurier);
 
 
-        for(int i=0; i<etapes.length; i++){
 
+        for(int i=0; i<etapes.length; i++){
             switch (etapes[i]){
                 case 'A':
+                    //Vérification pour éviter que l'aventurier ne soit en out of bounds
                     if(nextAventurierPosition.getPositionX() >= 0 && nextAventurierPosition.getPositionY() >= 0
-                    && nextAventurierPosition.getPositionX() <= largeur && nextAventurierPosition.getPositionY() <= longueur) {
-                        Coordonnees tmp = new Coordonnees(nextAventurierPosition.getPositionX() - currentAventurierPosition.getPositionX(), nextAventurierPosition.getPositionY() - currentAventurierPosition.getPositionY());
-                        currentAventurierPosition.setPositionX(nextAventurierPosition.getPositionX());
-                        currentAventurierPosition.setPositionY(nextAventurierPosition.getPositionY());
+                            && nextAventurierPosition.getPositionX() <= largeur && nextAventurierPosition.getPositionY() <= longueur) {
 
-                        aventurier.setPosition(currentAventurierPosition);
+                        //Vérification pour que l'aventurier ne puisse pas aller sur une case montange
+                        boolean isNextCaseMontagne = carte[nextAventurierPosition.getPositionX()][nextAventurierPosition.getPositionY()].getIsMontagne();
+                        if(isNextCaseMontagne) System.out.println("Vous ne pouvez pas accéder à la case ("+nextAventurierPosition.getPositionX()+","+nextAventurierPosition.getPositionY()+") dû à des montagnes.");
 
-                        nextAventurierPosition.setPositionX(currentAventurierPosition.getPositionX() + tmp.getPositionX());
-                        nextAventurierPosition.setPositionY(currentAventurierPosition.getPositionY() + tmp.getPositionY());
+                        //Application du déplacement
+                        if(!isNextCaseMontagne){
+                            Coordonnees tmp = new Coordonnees(nextAventurierPosition.getPositionX() - currentAventurierPosition.getPositionX(), nextAventurierPosition.getPositionY() - currentAventurierPosition.getPositionY());
+                            currentAventurierPosition.setPositionX(nextAventurierPosition.getPositionX());
+                            currentAventurierPosition.setPositionY(nextAventurierPosition.getPositionY());
 
-                        System.out.println("X après déplacement : " + aventurier.getPosition().getPositionX() + "\nY après déplacement : " + aventurier.getPosition().getPositionY());
-                        checkPositionAventurier(carte, aventurier);
+                            aventurier.setPosition(currentAventurierPosition);
+
+                            nextAventurierPosition.setPositionX(currentAventurierPosition.getPositionX() + tmp.getPositionX());
+                            nextAventurierPosition.setPositionY(currentAventurierPosition.getPositionY() + tmp.getPositionY());
+
+                            System.out.println("X après déplacement : " + aventurier.getPosition().getPositionX() + "\nY après déplacement : " + aventurier.getPosition().getPositionY());
+                            checkPositionTresor(carte, aventurier);
+                        }
 
                     }
                     break;
@@ -135,15 +143,12 @@ public class AventurierMouvementsService {
         }
     }
 
-    public static void checkPositionAventurier(Case[][] carte, Aventurier aventurier){
+    public static void checkPositionTresor(Case[][] carte, Aventurier aventurier){
         int nbTresorsDansCase = carte[aventurier.getPosition().getPositionX()][aventurier.getPosition().getPositionY()].getNbTresors();
 
         if(nbTresorsDansCase > 0){
-            System.out.println("Nombre de trésors de l'aventurier avant : " + aventurier.getNbTresors());
             carte[aventurier.getPosition().getPositionX()][aventurier.getPosition().getPositionY()].setNbTresors(nbTresorsDansCase - 1);
             aventurier.setNbTresors(aventurier.getNbTresors() + 1);
-            System.out.println("Nombre de trésors de l'aventurier après : " + aventurier.getNbTresors());
-
         }
     }
 }
