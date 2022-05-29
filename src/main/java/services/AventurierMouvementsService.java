@@ -4,6 +4,8 @@ import models.Aventurier;
 import models.Case;
 import models.Coordonnees;
 
+import java.util.List;
+
 public class AventurierMouvementsService {
 
     public static Coordonnees turnLeft(Aventurier aventurier){
@@ -73,7 +75,6 @@ public class AventurierMouvementsService {
         return nextAventurierPosition;
     }
 
-
     public static Coordonnees initializeNextAventurierPosition(Aventurier aventurier){
         Coordonnees nextAventurierPosition = new Coordonnees();
         switch(aventurier.getOrientation()){
@@ -93,9 +94,12 @@ public class AventurierMouvementsService {
         return nextAventurierPosition;
     }
 
-    public static void moveAventurier(Case[][] carte, Aventurier aventurier){
+    public static void moveAventurier(Case[][] carte, Aventurier aventurier, Coordonnees taille){
         String mouvements = aventurier.getMouvements();
         char[] etapes = mouvements.toCharArray();
+
+        int largeur = taille.getPositionX();
+        int longueur = taille.getPositionY();
 
         Coordonnees currentAventurierPosition = aventurier.getPosition();
         Coordonnees nextAventurierPosition = initializeNextAventurierPosition(aventurier);
@@ -105,16 +109,21 @@ public class AventurierMouvementsService {
 
             switch (etapes[i]){
                 case 'A':
-                    Coordonnees tmp = new Coordonnees(nextAventurierPosition.getPositionX() - currentAventurierPosition.getPositionX(), nextAventurierPosition.getPositionY() - currentAventurierPosition.getPositionY());
-                    currentAventurierPosition.setPositionX(nextAventurierPosition.getPositionX());
-                    currentAventurierPosition.setPositionY(nextAventurierPosition.getPositionY());
+                    if(nextAventurierPosition.getPositionX() >= 0 && nextAventurierPosition.getPositionY() >= 0
+                    && nextAventurierPosition.getPositionX() <= largeur && nextAventurierPosition.getPositionY() <= longueur) {
+                        Coordonnees tmp = new Coordonnees(nextAventurierPosition.getPositionX() - currentAventurierPosition.getPositionX(), nextAventurierPosition.getPositionY() - currentAventurierPosition.getPositionY());
+                        currentAventurierPosition.setPositionX(nextAventurierPosition.getPositionX());
+                        currentAventurierPosition.setPositionY(nextAventurierPosition.getPositionY());
 
-                    aventurier.setPosition(currentAventurierPosition);
+                        aventurier.setPosition(currentAventurierPosition);
 
-                    nextAventurierPosition.setPositionX(currentAventurierPosition.getPositionX() + tmp.getPositionX());
-                    nextAventurierPosition.setPositionY(currentAventurierPosition.getPositionY() + tmp.getPositionY());
+                        nextAventurierPosition.setPositionX(currentAventurierPosition.getPositionX() + tmp.getPositionX());
+                        nextAventurierPosition.setPositionY(currentAventurierPosition.getPositionY() + tmp.getPositionY());
 
-                    System.out.println("X après déplacement : " + aventurier.getPosition().getPositionX() + "\nY après déplacement : " + aventurier.getPosition().getPositionY());
+                        System.out.println("X après déplacement : " + aventurier.getPosition().getPositionX() + "\nY après déplacement : " + aventurier.getPosition().getPositionY());
+                        checkPositionAventurier(carte, aventurier);
+
+                    }
                     break;
                 case 'D':
                     nextAventurierPosition = turnRight(aventurier);
@@ -123,6 +132,18 @@ public class AventurierMouvementsService {
                     nextAventurierPosition = turnLeft(aventurier);
                     break;
             }
+        }
+    }
+
+    public static void checkPositionAventurier(Case[][] carte, Aventurier aventurier){
+        int nbTresorsDansCase = carte[aventurier.getPosition().getPositionX()][aventurier.getPosition().getPositionY()].getNbTresors();
+
+        if(nbTresorsDansCase > 0){
+            System.out.println("Nombre de trésors de l'aventurier avant : " + aventurier.getNbTresors());
+            carte[aventurier.getPosition().getPositionX()][aventurier.getPosition().getPositionY()].setNbTresors(nbTresorsDansCase - 1);
+            aventurier.setNbTresors(aventurier.getNbTresors() + 1);
+            System.out.println("Nombre de trésors de l'aventurier après : " + aventurier.getNbTresors());
+
         }
     }
 }

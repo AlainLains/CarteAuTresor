@@ -18,15 +18,11 @@ public abstract class CarteService {
     }
 
     public static Case[][] generateMap(List<String> rows){
-        int largeur = 0, longueur = 0;
-        for(String row : rows) {
-            String[] rowsplit = row.split(" - ");
-            if(rowsplit[0].equals("C")){
-                largeur = parseInt(rowsplit[1]);
-                longueur = parseInt(rowsplit[2]);
-            }
-        }
 
+
+        Coordonnees taille = getMapSize(rows);
+        int largeur = taille.getPositionX();
+        int longueur = taille.getPositionY();
         Case[][] carte = new Case[largeur][longueur];
 
         for(int i=0; i<largeur; i++){
@@ -63,6 +59,23 @@ public abstract class CarteService {
 
         }
     }
+
+    public static Coordonnees getMapSize(List<String> rows){
+        int largeur = 0, longueur = 0;
+        for(String row : rows) {
+            String[] rowsplit = row.split(" - ");
+            if(rowsplit[0].equals("C")){
+                largeur = parseInt(rowsplit[1]);
+                longueur = parseInt(rowsplit[2]);
+            }
+        }
+        return new Coordonnees(largeur, longueur);
+    }
+
+    public static Case[][] getMap(List<String> rows){
+        return createMap(rows);
+    }
+
 
 
 }
