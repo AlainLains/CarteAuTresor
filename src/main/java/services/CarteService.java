@@ -40,7 +40,6 @@ public abstract class CarteService {
             String[] rowsplit = row.split(" - ");
             switch (rowsplit[0]){
                 case "M":
-                    System.out.println(row);
                     int x = parseInt(rowsplit[1]);
                     int y = parseInt(rowsplit[2]);
                     carte[x][y].setIsMontagne(true);
@@ -48,7 +47,6 @@ public abstract class CarteService {
                     break;
 
                 case "T":
-                    System.out.println(row);
                     x = parseInt(rowsplit[1]);
                     y = parseInt(rowsplit[2]);
                     int nbTresors = Character.getNumericValue(row.charAt(12));

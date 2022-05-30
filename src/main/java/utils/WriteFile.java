@@ -2,8 +2,6 @@ package utils;
 
 import models.Aventurier;
 import models.Case;
-import models.Coordonnees;
-import services.CarteService;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -12,13 +10,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WriteFile {
+    /**
+     * Fonction qui permet d'écrire dans un fichier .txt le suivi de l'aventure.
+     * @param finalmap
+     * @param aventurier
+     */
     public static void writeResult(Case[][] finalmap, Aventurier aventurier) {
         try {
-            File result = new File("result2.txt");
+            File result = new File("journal_de_bord.txt");
 
             if (result.createNewFile()) {
                 System.out.println("File created: " + result.getName());
-                FileWriter myWriter = new FileWriter("result2.txt");
+                FileWriter myWriter = new FileWriter("journal_de_bord.txt");
 
                 List<String> data = getAllFinalData(finalmap, aventurier);
                 for(int i=0; i<data.size(); i++){
@@ -34,6 +37,12 @@ public class WriteFile {
         }
     }
 
+    /**
+     * Fonction qui permet de récupérer toutes les données une fois que l'avventure terminée.
+     * @param finalmap
+     * @param aventurier
+     * @return data = Le contenu du fichier de sortie.
+     */
     public static List<String> getAllFinalData(Case[][] finalmap, Aventurier aventurier){
 
         List<String> data = new ArrayList<String>();
