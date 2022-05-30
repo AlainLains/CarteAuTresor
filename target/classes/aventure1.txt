@@ -1,6 +1,0 @@
-C - 4 - 4
-M - 2 - 0
-M - 2 - 1
-T - 1 - 2 - 3
-T - 0 - 1 - 2
-A - Alain - 1 - 1 - S - AADDAGAGGGAA

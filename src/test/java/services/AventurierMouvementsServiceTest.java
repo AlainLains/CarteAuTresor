@@ -54,7 +54,7 @@ class AventurierMouvementsServiceTest {
 
         // Instanciation de l'aventurier
         Coordonnees c;
-        Aventurier av = new Aventurier("Alain", "S", c = new Coordonnees(3,4), "A");
+        Aventurier av = new Aventurier("Alain", "S", c = new Coordonnees(3,3), "A");
         Coordonnees initialAvPos = new Coordonnees(av.getPosition().getPositionX(), av.getPosition().getPositionY());
 
         // Génération de la carte
@@ -68,7 +68,7 @@ class AventurierMouvementsServiceTest {
         AventurierMouvementsService.moveAventurier(carte, av);
         assertTrue(initialAvPos.getPositionX() != av.getPosition().getPositionX()
                 || initialAvPos.getPositionY() != av.getPosition().getPositionY(),
-                "Le déplacement n'est pas possible car il rencontre soit une montage, soit une limite" +
+                "Le déplacement n'est pas possible car il rencontre soit une montage, soit une limite " +
                         "de la carte.");
 
 
